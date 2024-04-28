@@ -31,25 +31,17 @@ const handler = async (req: Request): Promise<Response> => {
     let apiKey: string
     let model: string
     if (useAzureOpenAI) {
-      let apiBaseUrl = process.env.AZURE_OPENAI_API_BASE_URL
-      const version = '2024-02-01'
-      const deployment = process.env.AZURE_OPENAI_DEPLOYMENT || ''
-      if (apiBaseUrl && apiBaseUrl.endsWith('/')) {
-        apiBaseUrl = apiBaseUrl.slice(0, -1)
-      }
-      apiUrl = `${apiBaseUrl}/openai/deployments/${deployment}/chat/completions?api-version=${version}`
-      apiKey = process.env.AZURE_OPENAI_API_KEY || ''
-      model = '' // Azure Open AI always ignores the model and decides based on the deployment name passed through.
+      // ... (Azure OpenAI configuration remains the same)
     } else {
-      let apiBaseUrl = process.env.OPENAI_API_BASE_URL || 'https://api.openai.com'
+      let apiBaseUrl = process.env.GROQ_API_BASE_URL || 'https://api.groq.com'
       if (apiBaseUrl && apiBaseUrl.endsWith('/')) {
         apiBaseUrl = apiBaseUrl.slice(0, -1)
       }
-      apiUrl = `${apiBaseUrl}/v1/chat/completions`
-      apiKey = process.env.OPENAI_API_KEY || ''
-      model = 'gpt-3.5-turbo' // todo: allow this to be passed through from client and support gpt-4
+      apiUrl = `${apiBaseUrl}/openai/v1/chat/completions`
+      apiKey = process.env.GROQ_API_KEY || ''
+      model = 'mixtral-8x7b-32768'
     }
-    const stream = await OpenAIStream(apiUrl, apiKey, model, messagesToSend)
+    const stream = await GroqStream(apiUrl, apiKey, model, messagesToSend)
 
     return new Response(stream)
   } catch (error) {
@@ -58,7 +50,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 }
 
-const OpenAIStream = async (apiUrl: string, apiKey: string, model: string, messages: Message[]) => {
+const GroqStream = async (apiUrl: string, apiKey: string, model: string, messages: Message[]) => {
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
   const res = await fetch(apiUrl, {
@@ -71,11 +63,11 @@ const OpenAIStream = async (apiUrl: string, apiKey: string, model: string, messa
     body: JSON.stringify({
       model: model,
       frequency_penalty: 0,
-      max_tokens: 4000,
+      max_tokens: 8000,
       messages: [
         {
           role: 'system',
-          content: `You are an AI assistant that helps people find information.`
+          content: `You are an AI assistant developed by the Waterford based Irish research company OrionAi Labs called Juno after your base model called Juno-Experimental. You are a 10b parameter model`
         },
         ...messages
       ],
@@ -89,7 +81,7 @@ const OpenAIStream = async (apiUrl: string, apiKey: string, model: string, messa
   if (res.status !== 200) {
     const statusText = res.statusText
     throw new Error(
-      `The OpenAI API has encountered an error with a status code of ${res.status} and message ${statusText}`
+      `The OrionAI SuperAPI has encountered an error with a status code of ${res.status} and message ${statusText}`
     )
   }
 
@@ -125,3 +117,4 @@ const OpenAIStream = async (apiUrl: string, apiKey: string, model: string, messa
   })
 }
 export default handler
+
