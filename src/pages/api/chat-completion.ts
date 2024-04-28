@@ -27,11 +27,20 @@ const handler = async (req: Request): Promise<Response> => {
     const useAzureOpenAI =
       process.env.AZURE_OPENAI_API_BASE_URL && process.env.AZURE_OPENAI_API_BASE_URL.length > 0
 
-    let apiUrl: string
-    let apiKey: string
-    let model: string
+    let apiUrl: string = ''
+    let apiKey: string = ''
+    let model: string = ''
+
     if (useAzureOpenAI) {
-      // ... (Azure OpenAI configuration remains the same)
+      let apiBaseUrl = process.env.AZURE_OPENAI_API_BASE_URL
+      const version = '2024-02-01'
+      const deployment = process.env.AZURE_OPENAI_DEPLOYMENT || ''
+      if (apiBaseUrl && apiBaseUrl.endsWith('/')) {
+        apiBaseUrl = apiBaseUrl.slice(0, -1)
+      }
+      apiUrl = `${apiBaseUrl}/openai/deployments/${deployment}/chat/completions?api-version=${version}`
+      apiKey = process.env.AZURE_OPENAI_API_KEY || ''
+      model = '' // Azure Open AI always ignores the model and decides based on the deployment name passed through.
     } else {
       let apiBaseUrl = process.env.GROQ_API_BASE_URL || 'https://api.groq.com'
       if (apiBaseUrl && apiBaseUrl.endsWith('/')) {
@@ -41,6 +50,7 @@ const handler = async (req: Request): Promise<Response> => {
       apiKey = process.env.GROQ_API_KEY || ''
       model = 'mixtral-8x7b-32768'
     }
+
     const stream = await GroqStream(apiUrl, apiKey, model, messagesToSend)
 
     return new Response(stream)
@@ -81,7 +91,7 @@ const GroqStream = async (apiUrl: string, apiKey: string, model: string, message
   if (res.status !== 200) {
     const statusText = res.statusText
     throw new Error(
-      `The OrionAI SuperAPI has encountered an error with a status code of ${res.status} and message ${statusText}`
+      `The GROQ API has encountered an error with a status code of ${res.status} and message ${statusText}`
     )
   }
 
@@ -117,4 +127,6 @@ const GroqStream = async (apiUrl: string, apiKey: string, model: string, message
   })
 }
 export default handler
+
+
 
