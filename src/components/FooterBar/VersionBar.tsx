@@ -9,7 +9,7 @@ const VersionBar = (props: VersionBarProps) => {
 
   return (
     <Space className={className} size={[46, 0]}>
-      <span>Version: 0.1.0</span>
+      <span>Version: 0.1.0 - Built by OrionAi Labs 2024</span>
     </Space>
   )
 }
