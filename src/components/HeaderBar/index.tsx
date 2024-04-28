@@ -16,14 +16,14 @@ const HeaderBar = () => {
         <div className={styles.logoBar}>
           <Link href="/">
             <img alt="logo" src="/logo192.png" />
-            <h1>ChatGPT Minimal</h1>
+            <h1>JunoChat Demo</h1>
           </Link>
         </div>
         <Space className={styles.right} size={0}>
           <span className={styles.right}>
             <Link
               className={styles.action}
-              href="https://github.com/blrchen/chatgpt-minimal"
+              href="https://loyal-role-063864.framer.app/"
               target="_blank"
             >
               <GithubOutlined />
