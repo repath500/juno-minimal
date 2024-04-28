@@ -26,7 +26,7 @@ const HeaderBar = () => {
               href="https://loyal-role-063864.framer.app/"
               target="_blank"
             >
-              <<InfoCircleOutlined /> />
+              <<InfoCircleOutlined />
             </Link>
           </span>
         </Space>
