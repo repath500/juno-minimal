@@ -16,7 +16,7 @@ const HeaderBar = () => {
         <div className={styles.logoBar}>
           <Link href="/">
             <img alt="logo" src="/logo192.png" />
-            <h1>Juno-3-10.5B running OrionAi SuperAPI</h1>
+            <h1>Juno running OrionAi SuperAPI</h1>
           </Link>
         </div>
         <Space className={styles.right} size={0}>
