@@ -11,7 +11,7 @@ const handler = async (req: Request): Promise<Response> => {
       messages: Message[]
     }
 
-    const charLimit = 12000
+    const charLimit = 32000
     let charCount = 0
     let messagesToSend = []
 
@@ -91,7 +91,7 @@ const GroqStream = async (apiUrl: string, apiKey: string, model: string, message
   if (res.status !== 200) {
     const statusText = res.statusText
     throw new Error(
-      `The GROQ API has encountered an error with a status code of ${res.status} and message ${statusText}`
+      `The  SuperAPI has encountered an error with a status code of ${res.status} and message ${statusText}`
     )
   }
 
