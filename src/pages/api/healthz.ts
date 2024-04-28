@@ -1,4 +1,4 @@
-ypescript
+
 export const config = {
   runtime: 'edge'
 }
