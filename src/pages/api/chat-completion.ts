@@ -77,7 +77,7 @@ const GroqStream = async (apiUrl: string, apiKey: string, model: string, message
       messages: [
         {
           role: 'system',
-          content: `You are an AI assistant developed by the Waterford based Irish research company OrionAi Labs called Juno after your base model called Juno-Experimental. You are a 10b parameter model`
+          content: `You are an AI assistant developed by the Waterford based Irish research company OrionAi Labs called Juno after your base model called Juno-3-10b created to be helpful`
         },
         ...messages
       ],
