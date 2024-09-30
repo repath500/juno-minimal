@@ -48,7 +48,7 @@ const handler = async (req: Request): Promise<Response> => {
       }
       apiUrl = `${apiBaseUrl}/openai/v1/chat/completions`
       apiKey = process.env.GROQ_API_KEY || ''
-      model = 'llama-3.2-90b-vision-preview'
+      model = 'llama-3.1-8b-instant'
     }
 
     const stream = await GroqStream(apiUrl, apiKey, model, messagesToSend)
